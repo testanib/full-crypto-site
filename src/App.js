@@ -1,12 +1,21 @@
 import logo from './logo.svg';
-import './App.css';
-
+import './App.scss';
+import { Switch, Route, Link } from 'react-router-dom';
+import { Layout, Typography, Space } from 'antd';
 import React from 'react'
-
+import { Navbar } from './components';
 const App = () => {
   return (
-    <div>
-      
+    <div className="app">
+      <div className="navbar">
+
+      </div>
+      <div className="main">
+
+      </div>
+      <div className="footer">
+
+      </div>
     </div>
   )
 }

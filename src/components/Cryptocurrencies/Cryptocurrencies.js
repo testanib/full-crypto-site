@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './Cryptocurrencies.scss';
 import millify from 'millify';
@@ -9,8 +9,13 @@ import { useGetCryptosQuery } from '../../services/cryptoApi';
 const Cryptocurrencies = ({simplified}) => {
   const count = simplified ? 10 : 100;
   const { data: cryptoList, isFetching } = useGetCryptosQuery(count);
-  const [cryptos, setCryptos ] = useState(cryptoList?.data?.coins);
-  
+  const [cryptos, setCryptos ] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const filteredData = cryptoList?.data?.coins?.filter(crypto => crypto.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    setCryptos(filteredData);
+  }, [cryptoList, searchTerm]);
 
   if(isFetching) {
     return <div>Loading...</div>
@@ -18,6 +23,12 @@ const Cryptocurrencies = ({simplified}) => {
 
   return (
     <>
+    {!simplified && (
+      <div className="search-crypto">
+      <Input placeholder="Search Cryptocurrencies" onChange={(e) => { setSearchTerm(e.target.value)}}/>
+    </div>
+    )}
+    
       <Row gutter={[32,32]} className="crypto-card-container">
         {cryptos?.map((currency) => (
           <Col xs={24} sm={12} md={8} lg={6} xl={4} className="crypto-card" key={currency.id}>
@@ -27,7 +38,7 @@ const Cryptocurrencies = ({simplified}) => {
                     hoverable
               >
                 <p>Price: ${Math.round(currency.price * 100) / 100}</p>
-                <p>Price: ${millify(currency.price, {precision: 2})}</p>
+                {/*<p>Price: ${millify(currency.price, {precision: 2})}</p>*/}
                 <p>Market Cap: {millify(currency.marketCap)}</p>
                 <p>Daily Change: {millify(currency.change)}%</p>
               </Card>

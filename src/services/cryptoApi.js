@@ -7,7 +7,7 @@ const cryptoApiHeaders = {
 
 const baseUrl = 'https://coinranking1.p.rapidapi.com';
 
-
+//call without limit to get all data
 const createRequest = (url) => ({url, headers: cryptoApiHeaders});
 export const cryptoApi = createApi({
     reducerPath: 'cryptoApi',
